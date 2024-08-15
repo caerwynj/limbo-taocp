@@ -26,6 +26,12 @@ main(argv: list of string)
 	print("%d solutions\n", solutions);
 }
 
+read_input()
+{
+	N1 := -1;
+	i := 0;
+}
+
 cover(i: int)
 {
 	p := nodes[i].DLINK;

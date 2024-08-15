@@ -4,5 +4,5 @@
 all: nqueens.dis nqueens2.dis nqueens3.dis langford.dis xcc.dis
 	echo done
 
-test: nqueens.dis 
-	esh nqueens
+test: in.dis 
+	mash ./in.dis ex1.dlx
