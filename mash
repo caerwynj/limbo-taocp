@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# ROOT must be set to root folder of inferno-os 
+# $ROOT/$SYSHOST/$OBJTYPE/bin is in PATH
+emu-g -c1 /dis/mash.dis -c "emuwdir=\`{cat /env/emuwdir}; bind -c '#U*'\$emuwdir /n/local; cd /n/local; $*"
