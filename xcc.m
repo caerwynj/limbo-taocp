@@ -7,4 +7,5 @@ Xcc: module {
 		LEN,TOP,ULINK,DLINK: int;
 	};
 	read_input: fn(filename: string): (array of Item, array of Node);
+	minit:fn();
 };

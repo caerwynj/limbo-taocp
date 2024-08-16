@@ -1,39 +1,51 @@
 implement Command;
 include "cmd.m";
+include "xcc.m";
+xccm : Xcc;
+Item, Node, read_input: import xccm;
 
-Item : adt {
-	NAME: string;
-	LLINK,RLINK: int;
-};
-Node : adt {
-	LEN,TOP,ULINK,DLINK: int;
-};
-items := array[10] of Item;
-nodes := array[32] of Node;
 l := 0;
-n := 4;
 N: int;
 Z: int;
 X := array[32] of int;
 solutions := 0;
+items: array of Item;
+nodes: array of Node;
 
 main(argv: list of string)
 {
+	xccm = load Xcc "./xccm.dis";
+	xccm->minit();
 	argv = tl argv;
-	if (len argv) n = int hd argv;
-	print("xcc 7.2.2.1X n=%d\n", n);
+	print("xcc 7.2.2.1X\n");
+	(items, nodes) = read_input(hd argv);
+	N = len items -1;
+	Z = len nodes -1;
+	#print_items();
+	#print_nodes();
 	xcc();
 	print("%d solutions\n", solutions);
 }
 
-read_input()
+print_items()
 {
-	N1 := -1;
-	i := 0;
+	for(i:=0;i<len items; i++) {
+		c := items[i];
+		print("%d: %s,%d,%d\n", i, c.NAME, c.LLINK, c.RLINK);
+	}
+}
+
+print_nodes()
+{
+	for(i:=0;i<len nodes;i++) {
+		c := nodes[i];
+		print("%d:%d,%d,%d,%d\n", i, c.LEN,c.TOP,c.ULINK,c.DLINK);
+	}
 }
 
 cover(i: int)
 {
+	print("cover %d\n", i);
 	p := nodes[i].DLINK;
 	while (p != i) {
 		hide(p);
@@ -47,6 +59,7 @@ cover(i: int)
 
 hide(p: int)
 {
+	print("hide %d\n", p);
 	q := p + 1;
 	while (q != p) {
 		x := nodes[q].TOP;
@@ -55,7 +68,7 @@ hide(p: int)
 		if (x <= 0) 
 			q = u;
 		else {
-			nodes[u].DLINK = u;
+			nodes[u].DLINK = d;
 			nodes[d].ULINK = u;
 			nodes[x].LEN--;
 			q++;
@@ -65,6 +78,7 @@ hide(p: int)
 
 uncover(i: int)
 {
+	print("uncover %d\n", i);
 	ll := items[i].LLINK;
 	rl := items[i].RLINK;
 	items[ll].RLINK = i;
@@ -78,6 +92,7 @@ uncover(i: int)
 
 unhide(p: int)
 {
+	print("unhide %d\n", p);
 	q := p - 1;
 	while (q != p) {
 		x := nodes[q].TOP;
@@ -97,8 +112,7 @@ unhide(p: int)
 visit()
 {
 	solutions++;
-	return;
-	for(i := 1; i <= n; i++) {
+	for(i := 1; i <= N; i++) {
 		print("%d", X[i]);
 	}
 	print("\n");
@@ -106,13 +120,33 @@ visit()
 
 choose(): int
 {
-	return 0;
+	theta := 100000;
+	i, p, ln: int;
+
+	p = items[0].RLINK;
+	#print("choose: %d len %d\n", p, nodes[p].LEN);
+	while (p != 0) {
+		ln = nodes[p].LEN;
+		if (ln < theta) {
+			theta = ln; 	
+			i = p;
+		}
+		if (ln  == 0)
+			break;
+		p = items[p].RLINK;
+		#print("choose: %d len %d\n", p, nodes[p].LEN);
+	}
+	print("choose: %d len %d\n", i, nodes[i].LEN);
+	return i;
 }
 
 xcc()
 {
 	backtrack := 0;
 	p, i, j: int;
+
+	print("starting xcc\n");
+	l = 0;
 	b2: for(;;) {
 		if (items[0].RLINK == 0) {
 			visit();
@@ -127,7 +161,7 @@ xcc()
 				if (X[l] == i) {
 					backtrack = 1;
 				}else{
-					p = X[l] - 1;
+					p = X[l] + 1;
 					while (p != X[l]) {
 						j = nodes[p].TOP;
 						if (j <= 0){

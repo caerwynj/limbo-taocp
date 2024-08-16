@@ -1,5 +1,10 @@
 #!/bin/sh
 
 # ROOT must be set to root folder of inferno-os 
-# $ROOT/$SYSHOST/$OBJTYPE/bin is in PATH
+# and add bin folder to path
+# e.g., 
+# export ROOT=$HOME/inferno-os
+# export SYSHOST=Linux
+# export OBJTYPE=amd64
+# export PATH=$PATH:$ROOT/$SYSHOST/$OBJTYPE/bin
 emu-g -c1 /dis/mash.dis -c "emuwdir=\`{cat /env/emuwdir}; bind -c '#U*'\$emuwdir /n/local; cd /n/local; $*"

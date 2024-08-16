@@ -2,21 +2,25 @@ implement Command, Xcc;
 include "cmd.m";
 include "xcc.m";
 
-
 main(argv: list of string)
 {
 	argv = tl argv;
 	(it, no) := read_input(hd argv);
 }
 
+minit()
+{
+	sys = load Sys Sys->PATH;
+	bufio = load Bufio Bufio->PATH;
+}
 read_input(filename: string): (array of Item, array of Node)
 {
 	line: string;
 	l: list of string;
-	N, N1, i, j, M, p, q, Z, n: int = 0;
+	N, N1, i, j, k, M, p, q, Z, n: int = 0;
 	f: ref Iobuf;
-	items := array[10] of Item;
-	nodes := array[32] of Node;
+	items := array[32] of Item;
+	nodes := array[128] of Node;
 
 	f = bufio->open(filename, Bufio->OREAD);
 	line = f.gets('\n');
@@ -35,7 +39,7 @@ read_input(filename: string): (array of Item, array of Node)
 	items[N+1].RLINK =  N1 + 1;
 	items[0].LLINK = N1;
 	items[N1].RLINK = 0;
-	print("node %d\n", lookup("g", items));
+	#print("lookup node g %d\n", lookup("g", items));
 
 	for(i=1; i<=N; i++) {
 		nodes[i].LEN = 0;
@@ -47,11 +51,12 @@ read_input(filename: string): (array of Item, array of Node)
 	nodes[p].TOP = 0;
 	while ((line = f.gets('\n')) != nil) {
 		(n, l) = sys->tokenize(line, " \t\r\n");
+		k = len l;
+		#print("line %s, %d toks\n", line, k);
 		for (j=1; l != nil; l = tl l) {
-			j++;
 			i = lookup(hd l, items);
-			if ( i == -1) {
-				print("error no found %s\n", hd l);
+			if (i == -1) {
+				print("error not found %s\n", hd l);
 			} else {
 				nodes[i].LEN++;
 				q = nodes[i].ULINK;
@@ -61,11 +66,17 @@ read_input(filename: string): (array of Item, array of Node)
 				nodes[i].ULINK = p+j;
 				nodes[p+j].TOP = i;
 			}
+			j++;
 		}
+		M++;
+		nodes[p].DLINK = p+k;
+		p += k+1;
+		nodes[p].TOP = -M;
+		nodes[p].ULINK = p-k;
 	}
 	Z = p;
-	print("Z %d\n", Z);
-	return (items, nodes);
+	print("N %d Z %d\n", N, Z);
+	return (items[:N+1], nodes[:Z+1]);
 }
 
 lookup(name:string, items: array of Item): int
