@@ -19,8 +19,8 @@ read_input(filename: string): (array of Item, array of Node)
 	l: list of string;
 	N, N1, i, j, k, M, p, q, Z, n: int = 0;
 	f: ref Iobuf;
-	items := array[32] of Item;
-	nodes := array[128] of Node;
+	items := array[32] of { * => Item(nil,0,0)};
+	nodes := array[128] of { * => Node(0,0,0,0) };
 
 	f = bufio->open(filename, Bufio->OREAD);
 	line = f.gets('\n');

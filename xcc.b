@@ -11,6 +11,7 @@ X := array[32] of int;
 solutions := 0;
 items: array of Item;
 nodes: array of Node;
+DEBUG: con 0;
 
 main(argv: list of string)
 {
@@ -21,8 +22,8 @@ main(argv: list of string)
 	(items, nodes) = read_input(hd argv);
 	N = len items -1;
 	Z = len nodes -1;
-	#print_items();
-	#print_nodes();
+	print_items();
+	print_nodes();
 	xcc();
 	print("%d solutions\n", solutions);
 }
@@ -45,7 +46,7 @@ print_nodes()
 
 cover(i: int)
 {
-	print("cover %d\n", i);
+	if(DEBUG)print("cover %d\n", i);
 	p := nodes[i].DLINK;
 	while (p != i) {
 		hide(p);
@@ -59,7 +60,7 @@ cover(i: int)
 
 hide(p: int)
 {
-	print("hide %d\n", p);
+	if(DEBUG)print("hide %d\n", p);
 	q := p + 1;
 	while (q != p) {
 		x := nodes[q].TOP;
@@ -78,7 +79,7 @@ hide(p: int)
 
 uncover(i: int)
 {
-	print("uncover %d\n", i);
+	if(DEBUG)print("uncover %d\n", i);
 	ll := items[i].LLINK;
 	rl := items[i].RLINK;
 	items[ll].RLINK = i;
@@ -92,7 +93,7 @@ uncover(i: int)
 
 unhide(p: int)
 {
-	print("unhide %d\n", p);
+	if(DEBUG)print("unhide %d\n", p);
 	q := p - 1;
 	while (q != p) {
 		x := nodes[q].TOP;
@@ -112,8 +113,17 @@ unhide(p: int)
 visit()
 {
 	solutions++;
-	for(i := 1; i <= N; i++) {
-		print("%d", X[i]);
+	print("solution: ");
+	for(i := 0; i < l; i++) {
+		q := X[i];
+		p := nodes[q];
+		if(DEBUG)print("node %d ", q);
+		while (p.TOP > 0) {
+			print("%s ", items[p.TOP].NAME);
+			q++;
+			p = nodes[q];
+		}
+		print("; ");
 	}
 	print("\n");
 }
@@ -136,7 +146,7 @@ choose(): int
 		p = items[p].RLINK;
 		#print("choose: %d len %d\n", p, nodes[p].LEN);
 	}
-	print("choose: %d len %d\n", i, nodes[i].LEN);
+	if(DEBUG)print("choose: %d len %d\n", i, nodes[i].LEN);
 	return i;
 }
 
@@ -152,10 +162,11 @@ xcc()
 			visit();
 			backtrack = 2;
 		} 
-		i = choose();
-		cover(i);
-		X[l] = nodes[i].DLINK;
-
+		if (!backtrack) {
+			i = choose();
+			cover(i);
+			X[l] = nodes[i].DLINK;
+		}
 		b3: for(;;) {
 			if (!backtrack) {
 				if (X[l] == i) {
@@ -193,7 +204,7 @@ xcc()
 				}
 
 				# backtrack
-				if (backtrack  != 2)
+				if (backtrack != 2)
 					uncover(i);
 				backtrack = 0;
 
