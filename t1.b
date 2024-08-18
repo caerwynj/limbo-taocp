@@ -7,7 +7,7 @@ main(nil:list of string)
 {
 	xcc = load Xcc "xccm.dis";
 	print("hello\n");
-	xcc->minit();
+	xcc->init();
 	(a, b) := xcc->read_input("ex1.dlx");
 	print("%d\n", len a);
 }

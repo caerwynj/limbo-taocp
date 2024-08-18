@@ -16,7 +16,7 @@ DEBUG: con 0;
 main(argv: list of string)
 {
 	xccm = load Xcc "./xccm.dis";
-	xccm->minit();
+	xccm->init();
 	argv = tl argv;
 	print("xcc 7.2.2.1X\n");
 	(items, nodes) = read_input(hd argv);

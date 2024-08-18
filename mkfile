@@ -9,3 +9,6 @@ test: xccm.dis  xcc.dis
 
 clean:
 	rm *.sbl
+
+profile:
+	emu-g sh -l -c "cprof -f -m Command xcc ex1.dlx" | awk -f countmems.awk
