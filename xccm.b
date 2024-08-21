@@ -29,6 +29,7 @@ read_input(filename: string): (array of Item, array of Node)
 	for (; l != nil; l = tl l) {
 		if (hd l == "|") {
 			N1 = i;
+			print("N1=%d\n", N1);
 			continue;
 		}
 		i++;
@@ -82,7 +83,7 @@ read_input(filename: string): (array of Item, array of Node)
 		nodes[p].ULINK = p-k;
 	}
 	Z = p;
-	print("N %d Z %d\n", N, Z);
+	print("N %d Z %d N1 %d N2 %d\n", N, Z, N1, N - N1);
 	return (items[:N+1], nodes[:Z+1]);
 }
 
