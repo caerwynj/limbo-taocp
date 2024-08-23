@@ -1,21 +1,16 @@
-implement Xcc;
-include "xcc.m";
-
+implement Xc;
+include "xc.m";
 include "sys.m";
 sys: Sys;
 print: import sys;
 include "bufio.m";
 bufio: Bufio;
 Iobuf: import bufio;
-include "string.m";
-str: String;
-splitl: import str;
 
 init()
 {
 	sys = load Sys Sys->PATH;
 	bufio = load Bufio Bufio->PATH;
-	str = load String String->PATH;
 }
 
 read_input(filename: string): (array of Item, array of Node)
@@ -25,7 +20,7 @@ read_input(filename: string): (array of Item, array of Node)
 	N, N1, i, j, k, M, p, q, Z, n: int = 0;
 	f: ref Iobuf;
 	items := array[1024] of { * => Item(nil,0,0)};
-	nodes := array[1024] of { * => Node(0,0,0,0,0) };
+	nodes := array[1024] of { * => Node(0,0,0,0) };
 
 	N1 = -1;
 	f = bufio->open(filename, Bufio->OREAD);
@@ -66,8 +61,7 @@ read_input(filename: string): (array of Item, array of Node)
 		k = len l;
 		#print("line %s, %d toks\n", line, k);
 		for (j=1; l != nil; l = tl l) {
-			(ls, rs) := splitl(hd l, ":");
-			i = lookup(ls, items);
+			i = lookup(hd l, items);
 			if (i == -1) {
 				print("error not found %s\n", hd l);
 				exit;
@@ -79,8 +73,6 @@ read_input(filename: string): (array of Item, array of Node)
 				nodes[p+j].DLINK = i;
 				nodes[i].ULINK = p+j;
 				nodes[p+j].TOP = i;
-				if(rs != nil) 
-					nodes[p+j].COLOR = int(rs[1:2]);
 			}
 			j++;
 		}

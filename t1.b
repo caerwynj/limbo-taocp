@@ -1,13 +1,13 @@
 implement Command;
 include "cmd.m";
-include "xcc.m";
-xcc : Xcc;
+include "xc.m";
+xc : Xc;
 
 main(nil:list of string)
 {
-	xcc = load Xcc "xccm.dis";
+	xc = load Xc "xcm.dis";
 	print("hello\n");
-	xcc->init();
-	(a, b) := xcc->read_input("ex1.dlx");
+	xc->init();
+	(a, b) := xc->read_input("ex1.dlx");
 	print("%d\n", len a);
 }

@@ -6,15 +6,15 @@ DIS=\
 	nqueens2.dis\
 	nqueens3.dis\
 	langford.dis\
-	xcc.dis\
-	xccm.dis\
+	xc.dis\
+	xcm.dis\
 	debug.dis
 
 all: $DIS
 	echo done
 
-test: xccm.dis xcc.dis
-	mash ./xcc.dis ex1.dlx
+test: xcm.dis xc.dis
+	mash ./xc.dis ex1.dlx
 
 clean:
 	rm *.sbl
@@ -23,4 +23,4 @@ nuke:
 	rm -f *.sbl *.dis
 
 profile:
-	emu-g sh -l -c "cprof -f -m Command xcc ex1.dlx" | awk -f countmems.awk
+	emu-g sh -l -c "cprof -f -m Command xc ex1.dlx" | awk -f countmems.awk

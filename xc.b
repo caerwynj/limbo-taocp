@@ -1,8 +1,8 @@
 implement Command;
 include "cmd.m";
-include "xcc.m";
-xccm : Xcc;
-Item, Node, read_input: import xccm;
+include "xc.m";
+xcm : Xc;
+Item, Node, read_input: import xcm;
 
 l := 0;
 N: int;
@@ -15,10 +15,10 @@ DEBUG: con 0;
 
 main(argv: list of string)
 {
-	xccm = load Xcc "xccm.dis";
-	xccm->init();
+	xcm = load Xc "./xcm.dis";
+	xcm->init();
 	argv = tl argv;
-	print("xcc 7.2.2.1C\n");
+	print("xc 7.2.2.1X\n");
 	(items, nodes) = read_input(hd argv);
 	N = len items -1;
 	Z = len nodes -1;
@@ -41,50 +41,6 @@ print_nodes()
 	for(i:=0;i<len nodes;i++) {
 		c := nodes[i];
 		print("%d:%d,%d,%d,%d\n", i, c.LEN,c.TOP,c.ULINK,c.DLINK);
-	}
-}
-
-commit(p, j: int)
-{
-	if (nodes[p].COLOR == 0)
-		cover(j);
-	else
-		purify(p);
-}
-
-purify(p: int)
-{
-	c := nodes[p].COLOR;
-	i := nodes[p].TOP;
-	q := nodes[i].DLINK;
-	while (q != i) {
-		if (nodes[q].COLOR == c) 
-			nodes[q].COLOR = -1;
-		else
-			hide(q);
-		q = nodes[q].DLINK;
-	}
-}
-
-uncommit(p, j: int)
-{
-	if(nodes[p].COLOR == 0)
-		uncover(j);
-	if(nodes[p].COLOR > 0)
-		unpurify(p);
-}
-
-unpurify(p: int)
-{
-	c := nodes[p].COLOR;
-	i := nodes[p].TOP;
-	q := nodes[i].ULINK;
-	while (q != i) {
-		if (nodes[q].COLOR < 0)
-			nodes[q].COLOR = c;
-		else
-			unhide(q);
-		q = nodes[q].ULINK;
 	}
 }
 
@@ -112,8 +68,6 @@ hide(p: int)
 		d := nodes[q].DLINK;
 		if (x <= 0) 
 			q = u;
-		else if (nodes[q].COLOR == -1)
-			q++;
 		else {
 			nodes[u].DLINK = d;
 			nodes[d].ULINK = u;
@@ -147,8 +101,6 @@ unhide(p: int)
 		d := nodes[q].DLINK;
 		if (x <= 0) {
 			q = d;
-		} else if (nodes[q].COLOR == -1) {
-			q++;
 		} else {
 			nodes[u].DLINK = q;
 			nodes[d].ULINK = q;
