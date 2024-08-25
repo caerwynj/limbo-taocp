@@ -60,7 +60,7 @@ main(argv: list of string)
 		"quit" or "q" =>
 			exit;
 		"run" =>
-			(prog, s) = debug->startprog(hd tl l, ".", nil, tl tl l);
+			(prog, s) = debug->startprog(hd tl l, ".", nil, tl l);
 			if(prog == nil)
 				print("error %s\n", s);
 		"cont" or "c" =>
@@ -183,7 +183,10 @@ main(argv: list of string)
 					sh->system(nil, sprint("sed -n '%d,%dp' %s", currline, currline+10, srcfile));
 			} else print("err unknown srcfile\n");
 		"expand" =>
-			expand(hd tl l);
+			if(len l > 1)
+				expand(hd tl l);
+		"!" =>
+			sh->system(nil, line[1:]);
 		"help" =>
 			print("run file.dis args	; program to debug with args\n");
 			print("brk lineno		; set breakpoint in current file\n");
@@ -198,6 +201,7 @@ main(argv: list of string)
 			print("status			; print status from prog(3)\n");
 			print("stack			; print stack\n");
 			print("list begin,end		; list lines from source file\n");
+			print("expand symbol		; expand and display value of symbol\n");
 			print("quit 			; quit\n");
 		* =>
 			print("unknown %s\n", hd l);
@@ -220,7 +224,7 @@ stack(prog: ref Prog)
 	(file, rest) := str->splitl(src, ":");
 	(lnum, pos) := str->splitl(rest[1:], ".");
 	currline = int(lnum);
-	sh->system(nil, sprint("sed -n '%sp' %s", lnum, srcfile));
+	sh->system(nil, sprint("sed -n '%sp' %s", lnum, file));
 	expand("tos");
 }
 

@@ -18,34 +18,21 @@ main(argv: list of string)
 	xccm = load Xcc "xccm.dis";
 	xccm->init();
 	argv = tl argv;
-	print("xcc 7.2.2.1C\n");
+	if(argv == nil)
+		raise "xcc file";
+	print("xcc 7.2.2.1C %s\n", hd argv);
 	(items, nodes) = read_input(hd argv);
 	N = len items -1;
 	Z = len nodes -1;
-	print_items();
-	print_nodes();
+	xccm->print_items(items);
+	xccm->print_nodes(nodes);
 	xcc();
 	print("%d solutions\n", solutions);
 }
 
-print_items()
-{
-	for(i:=0;i<len items; i++) {
-		c := items[i];
-		print("%d: %s,%d,%d\n", i, c.NAME, c.LLINK, c.RLINK);
-	}
-}
-
-print_nodes()
-{
-	for(i:=0;i<len nodes;i++) {
-		c := nodes[i];
-		print("%d:%d,%d,%d,%d\n", i, c.LEN,c.TOP,c.ULINK,c.DLINK);
-	}
-}
-
 commit(p, j: int)
 {
+	if(DEBUG)print("commit %d %d\n", p, j);
 	if (nodes[p].COLOR == 0)
 		cover(j);
 	else
@@ -54,6 +41,7 @@ commit(p, j: int)
 
 purify(p: int)
 {
+	if(DEBUG)print("purify %d\n", p);
 	c := nodes[p].COLOR;
 	i := nodes[p].TOP;
 	q := nodes[i].DLINK;
@@ -68,6 +56,7 @@ purify(p: int)
 
 uncommit(p, j: int)
 {
+	if(DEBUG)print("uncommit %d %d\n", p, j);
 	if(nodes[p].COLOR == 0)
 		uncover(j);
 	if(nodes[p].COLOR > 0)
@@ -76,6 +65,7 @@ uncommit(p, j: int)
 
 unpurify(p: int)
 {
+	if(DEBUG)print("unpurify %d\n", p);
 	c := nodes[p].COLOR;
 	i := nodes[p].TOP;
 	q := nodes[i].ULINK;
@@ -148,7 +138,7 @@ unhide(p: int)
 		if (x <= 0) {
 			q = d;
 		} else if (nodes[q].COLOR == -1) {
-			q++;
+			q--;
 		} else {
 			nodes[u].DLINK = q;
 			nodes[d].ULINK = q;
@@ -206,6 +196,7 @@ xcc()
 	print("starting xcc\n");
 	l = 0;
 	b2: for(;;) {
+		if(DEBUG)print("step C2\n");
 		if (items[0].RLINK == 0) {
 			visit();
 			backtrack = 2;
@@ -226,7 +217,7 @@ xcc()
 						if (j <= 0){
 							p = nodes[p].ULINK;
 						} else {
-							cover(j);
+							commit(p,j);
 							p++;
 						}
 					}
@@ -242,7 +233,7 @@ xcc()
 						if (j <= 0) {
 							p = nodes[p].DLINK;
 						} else {
-							uncover(j);
+							uncommit(p,j);
 							p--;
 						}
 					}

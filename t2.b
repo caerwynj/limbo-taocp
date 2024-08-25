@@ -13,4 +13,5 @@ main(argv :list of string)
 	xcc->init();
 	(a, b) := read_input(hd argv);
 	print("%d\n", len a);
+	xcc->print_nodes(b);
 }

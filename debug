@@ -12,4 +12,4 @@ case $# in
 0) args=mash;;
 *) args=$*;;
 esac
-emu-g -c1 /dis/mash.dis -c "emuwdir=\`{cat /env/emuwdir}; bind -c '#U*'\$emuwdir /n/local; cd /n/local; $args"
+emu-g -c0 /dis/mash.dis -c "emuwdir=\`{cat /env/emuwdir}; bind -c '#U*'\$emuwdir /n/local; cd /n/local; debug $args"

@@ -46,9 +46,9 @@ read_input(filename: string): (array of Item, array of Node)
 	if (N1 < 0)
 		N1 = N;
 	items[N+1].LLINK = N;
+	items[N+1].RLINK =  N1 + 1;
 	items[N].RLINK = N + 1;
 	items[N1+1].LLINK = N + 1;
-	items[N+1].RLINK =  N1 + 1;
 	items[0].LLINK = N1;
 	items[N1].RLINK = 0;
 	#print("lookup node g %d\n", lookup("g", items));
@@ -79,8 +79,8 @@ read_input(filename: string): (array of Item, array of Node)
 				nodes[p+j].DLINK = i;
 				nodes[i].ULINK = p+j;
 				nodes[p+j].TOP = i;
-				if(rs != nil) 
-					nodes[p+j].COLOR = int(rs[1:2]);
+				if(rs != nil && len rs >= 2) 
+					nodes[p+j].COLOR = int(rs[1]);
 			}
 			j++;
 		}
@@ -92,7 +92,7 @@ read_input(filename: string): (array of Item, array of Node)
 	}
 	Z = p;
 	print("N %d Z %d N1 %d N2 %d\n", N, Z, N1, N - N1);
-	return (items[:N+1], nodes[:Z+1]);
+	return (items[:N+2], nodes[:Z+1]);
 }
 
 lookup(name:string, items: array of Item): int
@@ -105,3 +105,18 @@ lookup(name:string, items: array of Item): int
 	return -1;
 }
 
+print_items(items: array of Item)
+{
+	for(i:=0;i<len items; i++) {
+		c := items[i];
+		print("%d: %s,%d,%d\n", i, c.NAME, c.LLINK, c.RLINK);
+	}
+}
+
+print_nodes(nodes: array of Node)
+{
+	for(i:=0;i<len nodes;i++) {
+		c := nodes[i];
+		print("%d:%d,%d,%d,%d,%d\n", i, c.LEN,c.TOP,c.ULINK,c.DLINK,c.COLOR);
+	}
+}

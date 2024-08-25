@@ -8,13 +8,17 @@ DIS=\
 	langford.dis\
 	xc.dis\
 	xcm.dis\
-	debug.dis
+	debug.dis\
+	xcc.dis\
+	xccm.dis\
+	t1.dis\
+	t2.dis
 
 all: $DIS
 	echo done
 
 test: xcm.dis xc.dis
-	mash ./xc.dis ex1.dlx
+	mash ./xcc.dis ex4.dlx
 
 clean:
 	rm *.sbl
