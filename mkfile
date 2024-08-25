@@ -17,8 +17,9 @@ DIS=\
 all: $DIS
 	echo done
 
-test: xcm.dis xc.dis
+test: xcm.dis xc.dis xccm.dis xcc.dis
 	mash ./xcc.dis ex4.dlx
+	mash run -x mashfile
 
 clean:
 	rm *.sbl

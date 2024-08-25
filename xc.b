@@ -155,7 +155,7 @@ xcc()
 	backtrack := 0;
 	p, i, j: int;
 
-	print("starting xcc\n");
+	print("starting xc\n");
 	l = 0;
 	b2: for(;;) {
 		if (items[0].RLINK == 0) {

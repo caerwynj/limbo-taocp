@@ -24,8 +24,10 @@ main(argv: list of string)
 	(items, nodes) = read_input(hd argv);
 	N = len items -1;
 	Z = len nodes -1;
-	xccm->print_items(items);
-	xccm->print_nodes(nodes);
+	if(DEBUG){
+		xccm->print_items(items);
+		xccm->print_nodes(nodes);
+	}
 	xcc();
 	print("%d solutions\n", solutions);
 }

@@ -1,5 +1,4 @@
 ./xc.dis ex1.dlx > t1.out;
 ./xc.dis ex2.dlx > t2.out;
-./xc.dis ex3.dlx > t3.out;
+./xcc.dis ex3.dlx > t3.out;
 ./xcc.dis ex4.dlx > t4.out;
-
