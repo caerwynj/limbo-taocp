@@ -1,15 +1,3 @@
 #!/bin/sh
 
-# ROOT must be set to root folder of inferno-os 
-# and add bin folder to path
-# e.g., 
-# export ROOT=$HOME/inferno-os
-# export SYSHOST=Linux
-# export OBJTYPE=amd64
-# export PATH=$PATH:$ROOT/$SYSHOST/$OBJTYPE/bin
-
-case $# in
-0) args=mash;;
-*) args=$*;;
-esac
 emu-g -c0 /dis/mash.dis -c "emuwdir=\`{cat /env/emuwdir}; bind -c '#U*'\$emuwdir /n/local; cd /n/local; debug $args"

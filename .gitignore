@@ -1,3 +1,4 @@
 *.sbl
 *.dis
 .exrc
+*.out

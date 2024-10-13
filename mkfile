@@ -22,10 +22,10 @@ test: xcm.dis xc.dis xccm.dis xcc.dis
 	mash run -x mashfile
 
 clean:
-	rm *.sbl
+	rm *.sbl *.out
 
 nuke:
-	rm -f *.sbl *.dis
+	rm -f *.sbl *.dis *.out
 
 profile:
 	emu-g sh -l -c "cprof -f -m Command xc ex1.dlx" | awk -f countmems.awk
