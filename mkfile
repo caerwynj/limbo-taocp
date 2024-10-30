@@ -12,7 +12,8 @@ DIS=\
 	xcc.dis\
 	xccm.dis\
 	t1.dis\
-	t2.dis
+	t2.dis\
+	trie.dis
 
 all: $DIS
 	echo done
