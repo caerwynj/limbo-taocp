@@ -4,7 +4,6 @@
 DIS=\
 	nqueens.dis\
 	nqueens2.dis\
-	nqueens3.dis\
 	langford.dis\
 	xc.dis\
 	xcm.dis\
@@ -13,7 +12,8 @@ DIS=\
 	xccm.dis\
 	t1.dis\
 	t2.dis\
-	trie.dis
+	trie.dis\
+	word.dis
 
 all: $DIS
 	echo done
